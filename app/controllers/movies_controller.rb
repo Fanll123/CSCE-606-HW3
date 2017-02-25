@@ -23,15 +23,17 @@ class MoviesController < ApplicationController
 
     if @ratings_sel == nil
       @ratings_sel = @all_ratings
+    else
+      @ratings_sel = @ratings_sel.keys
     end
-
+    
     if (params[:sort_by] != session[:sort_by]) || (params[:ratings] != session[:ratings])
       flash.keep
       redirect_to movies_path :sort_by=> session[:sort_by], :ratings=> session[:ratings]
       return
     end
 
-    @movies = Movie.order(@sort).where(:rating => @ratings_sel.keys)
+    @movies = Movie.order(@sort).where(:rating => @ratings_sel)
 
 #    session[:sort_by] = @sort
 #    session[:ratings] = @ratings_sel
